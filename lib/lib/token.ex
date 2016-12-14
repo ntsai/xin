@@ -1,12 +1,9 @@
 defmodule Xin.Lib.Token do
   import Joken
-
-  @doc """
-  token插件
+  @moduledoc """
+  jwt token模块
   """
-
   @secret "my_secret"
-
 
   # 创建一个token
   def new(conn, data) do
@@ -16,18 +13,17 @@ defmodule Xin.Lib.Token do
     |> sign
     |> get_compact
   end
-  
+
   # 解析一个token
   def get(key \\ %{}) do
     t = key
     |> token
     |> with_signer(hs256(@secret))
-    |> verify   
+    |> verify
     t.claims
   end
 
 end
-
 
 defmodule Xin.Token.Auth do
   import Plug.Conn
@@ -44,8 +40,8 @@ defmodule Xin.Token.Auth do
       data = conn |> fetch_session |> get_session(:user)
       if data, do: conn = Map.put conn, :user, data
     end
-    
+
     conn
   end
-  
+
 end

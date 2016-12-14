@@ -1,5 +1,6 @@
 defmodule Xin.Lib.QiNiu do
-  @doc """
+
+  @moduledoc """
   添加七牛插件deps:
 
   {:qiniu, github: "tony612/qiniu"},
@@ -15,10 +16,12 @@ defmodule Xin.Lib.QiNiu do
     access_key: "access_key",
     secret_key: "secret_key",
     scope_name: "空间名",
-    scope_url:  "空间url地址"      
+    scope_url:  "空间url地址"
   """
 
-  #上传图片或者文件,返回 服务器图片地址
+  @doc """
+  传图片或者文件,返回 服务器图片地址, conn传入
+  """
   def upload(data) when is_map(data) do
     config = Application.get_env :xin, :qiniu
     scope_name = config[:scope_name]
@@ -26,9 +29,12 @@ defmodule Xin.Lib.QiNiu do
     put_policy = Qiniu.PutPolicy.build(scope_name)
     req = Qiniu.Uploader.upload(put_policy, data["path"])
     file_name = req.body["key"]
-    scope_url <> "/" <> file_name 
+    scope_url <> "/" <> file_name
   end
 
+  @doc """
+  传图片或者文件,返回 服务器图片地址, base64传入
+  """
   def upload(str_base64) when is_binary(str_base64) do
     path = "./#{Enum.take_random(?0..?9, 4)}"
     {:ok, decode64} = Base.decode64(str_base64)
@@ -40,7 +46,7 @@ defmodule Xin.Lib.QiNiu do
     req = Qiniu.Uploader.upload(put_policy, path)
     file_name = req.body["key"]
     File.rm!(path)
-    scope_url <> "/" <> file_name 
+    scope_url <> "/" <> file_name
   end
 
 end

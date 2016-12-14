@@ -1,20 +1,29 @@
 defmodule Xin.Mixfile do
   use Mix.Project
 
+  @version "0.1.0"
+
   def project do
     [app: :xin,
-     version: "0.1.0",
+     version: @version,
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps()]
+     name: "Xin",
+     docs: [extras: ["README.md"], main: "Xin"],
+     deps: deps,
+     package: package,
+     description: """
+     An Phoenix Test Package.
+     """
+    ]
   end
 
   # Configuration for the OTP application
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :ecto_timestamps, :qiniu]]
   end
 
   # Dependencies can be Hex packages:
@@ -36,7 +45,15 @@ defmodule Xin.Mixfile do
      {:joken, "~> 1.2"},
      {:xlsxir, "~> 1.3.1"},
      {:elixlsx, "~> 0.0.6"},
-     {:ecto_timestamps, "~> 1.0.0"},     
+     {:ecto_timestamps, "~> 1.0.0"},
+     {:ex_doc, "~> 0.14", only: :dev},
     ]
+  end
+
+  defp package do
+    [maintainers: ["sai",],
+     licenses: ["MIT"],
+     links: %{github: "https://github.com/ntsai/xin"},
+     files: ~w(lib README.md mix.exs LICENSE)]
   end
 end

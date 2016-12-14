@@ -1,6 +1,8 @@
 defmodule Xin.Lib.Form do
-  
-  @doc """
+
+  @moduledoc """
+  表单验证模块
+
   defmodule FormTest do
     use Xin.Lib.Form
 
@@ -15,6 +17,7 @@ defmodule Xin.Lib.Form do
     end
   end
   """
+  
   defmacro form(do: block) do
     quote do
       form nil do
@@ -24,15 +27,15 @@ defmodule Xin.Lib.Form do
   end
 
   defmacro form(mod, do: block) do
-    
+
     quote do
       Module.put_attribute __MODULE__, :form_filed, verfiy_struct(unquote(mod))
 
-      unquote(block)  
+      unquote(block)
 
       def verify_form(conn) do
         Enum.reduce(@form_filed, %{req: true, data: %{}, errors: []}, fn(form_filed_data, acc) ->
-            {filed_name, filed_data}  = form_filed_data            
+            {filed_name, filed_data}  = form_filed_data
             {name, req, errors, value} = verfiy(filed_name, filed_data, conn)
             acc_req = unless req, do: false, else: acc[:req]
             acc_data = Map.put(acc[:data], Atom.to_string(filed_name), value)
@@ -40,25 +43,25 @@ defmodule Xin.Lib.Form do
             %{req: acc_req, data: acc_data, errors: acc_errors}
         end)
 
-      end     
+      end
 
       defp verfiy(name, data, conn) do
-        value = Map.get(conn, Atom.to_string(name))  
+        value = Map.get(conn, Atom.to_string(name))
         {req, errors, value} = verfiy_field(data[:opt], data[:type], value)
         label = if data[:opt][:label], do: data[:opt][:label], else: name
         errors = if errors != "", do: "#{label}: #{errors}", else: ""
         {name, req, errors, value}
       end
 
-    end 
+    end
   end
 
   defmacro filed(name, type, opt \\ []) do
     quote do
       data = %{name: unquote(name), type: unquote(type), opt: unquote(opt)}
       form_filed = Map.put(@form_filed, unquote(name), data)
-      Module.put_attribute __MODULE__, :form_filed, form_filed      
-    end    
+      Module.put_attribute __MODULE__, :form_filed, form_filed
+    end
   end
 
   defmacro __using__(_) do
@@ -70,14 +73,14 @@ defmodule Xin.Lib.Form do
 
   def verfiy_field(opt, type, value) do
     value = if opt[:default] && value == nil, do: opt[:default], else: value
-    
+
     {req ,errors} = if opt[:required] && value == nil do
                       {false, "字段#{opt[:name]}必填"}
                     else
                       {true, ""}
                     end
     {req ,errors} = if req && value do
-                      verfiy_field_type(value, type)                      
+                      verfiy_field_type(value, type)
                     else
                       {req ,errors}
                     end
@@ -97,7 +100,7 @@ defmodule Xin.Lib.Form do
             is_boolean(value)
           :number ->
             is_number(value)
-          :map -> 
+          :map ->
             is_map(value)
           :list ->
             is_list(value)
@@ -105,7 +108,7 @@ defmodule Xin.Lib.Form do
             is_float(value)
           _ ->
             true
-          end          
+          end
     errors = unless req, do: "必须是#{@errors_type_msg[type]}", else: ""
     {req, errors} = if type == :mobile do
                       Xin.Help.is_mobile(value)
@@ -114,7 +117,7 @@ defmodule Xin.Lib.Form do
                     end
     {req, errors}
   end
-  
+
   def verfiy_struct(mod) do
     data = mod.__schema__(:types)
     Enum.reduce(data, %{}, fn({filed_name, type}, acc) ->
@@ -135,5 +138,3 @@ end
 #   end
 
 # end
-
-

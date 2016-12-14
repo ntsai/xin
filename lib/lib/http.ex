@@ -1,5 +1,9 @@
 #Http 模块
 defmodule Xin.Lib.Http do
+  @moduledoc """
+    phoenix conn in http相关函数
+  """
+
   @doc """
   判断是否移动端 参数 conn
   """
