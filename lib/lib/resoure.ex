@@ -1,4 +1,4 @@
-defmodule Xin.Lib.Rest do
+defmodule Xin.Rest do
 
   @doc """
     路由宏

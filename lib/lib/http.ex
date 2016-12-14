@@ -1,5 +1,5 @@
 #Http 模块
-defmodule Xin.Lib.Http do
+defmodule Xin.Http do
   @moduledoc """
     phoenix conn in http相关函数
   """
@@ -7,7 +7,7 @@ defmodule Xin.Lib.Http do
   @doc """
   判断是否移动端 参数 conn
   """
-  def is_mobile(conn) do
+  def is_mobile?(conn) do
     h = headers(conn)[:"user-agent"] |> String.downcase
     String.contains?(h, "android") or String.contains?(h, "iphone")
   end
@@ -19,8 +19,13 @@ defmodule Xin.Lib.Http do
     Enum.map(conn.req_headers, fn {k,v} -> {String.to_atom(k),v} end)
   end
 
+  @doc """
+  获取authorization
+  """
   def authorization(conn) do
     a = headers(conn)[:"authorization"]
     a || nil
   end
+
 end
+

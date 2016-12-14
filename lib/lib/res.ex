@@ -305,7 +305,7 @@ defmodule DeleteView do
   end
 end
 
-defmodule Xin.Lib.Resource do
+defmodule Xin.Resource do
   use Phoenix.Router
 
   @doc """

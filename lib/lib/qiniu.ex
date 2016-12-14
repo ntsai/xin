@@ -1,4 +1,4 @@
-defmodule Xin.Lib.QiNiu do
+defmodule Xin.QiNiu do
 
   @moduledoc """
   添加七牛插件deps:
@@ -22,12 +22,12 @@ defmodule Xin.Lib.QiNiu do
   @doc """
   传图片或者文件,返回 服务器图片地址, conn传入
   """
-  def upload(data) when is_map(data) do
+  def upload(conn) when is_map(conn) do
     config = Application.get_env :xin, :qiniu
     scope_name = config[:scope_name]
     scope_url  = config[:scope_url]
     put_policy = Qiniu.PutPolicy.build(scope_name)
-    req = Qiniu.Uploader.upload(put_policy, data["path"])
+    req = Qiniu.Uploader.upload(put_policy, conn["path"])
     file_name = req.body["key"]
     scope_url <> "/" <> file_name
   end

@@ -23,7 +23,7 @@ defmodule Xin.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :ecto_timestamps, :qiniu]]
+    [applications: [:logger, :httpoison, :ecto_timestamps, :qiniu]]
   end
 
   # Dependencies can be Hex packages:

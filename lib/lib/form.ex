@@ -1,10 +1,10 @@
-defmodule Xin.Lib.Form do
+defmodule Xin.Form do
 
   @moduledoc """
   表单验证模块
 
   defmodule FormTest do
-    use Xin.Lib.Form
+    use Xin.Form
 
     form "user" do
       filed :name,   :string,  required: true, label: "姓名"
@@ -126,15 +126,3 @@ defmodule Xin.Lib.Form do
   end
 end
 
-
-# defmodule FormTest do
-#   use Xin.Lib.Form
-
-#   #定义用户登录表单
-#   form  Xin.Product do
-#     filed :name,   :string,  required: true, label: "姓名", default: "sai"
-#     filed :passwd, :string,  required: true, label: "密码"
-#     filed :phone,  :mobile,  required: true, label: "手机"
-#   end
-
-# end

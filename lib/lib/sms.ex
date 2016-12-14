@@ -1,5 +1,5 @@
 #短信模块
-defmodule Xin.Lib.Sms do
+defmodule Xin.Sms do
   @moduledoc """
   短信插件(云片)
 
@@ -22,21 +22,24 @@ defmodule Xin.Lib.Sms do
   """
   def get_code(dev), do: if dev, do: "8888", else: code
 
-  #检查手机号码
-  def check(phone) do
-    Xin.Help.is_phone?(phone)
+  #检查手机号码 renturn {result, error}
+  def is_phone?(mobile) do
+    Xin.Help.is_phone?(mobile)
   end
 
   @doc """
-  发送短信，目前支持云片
+  发送短信，目前支持云片 return {result, error}
   """
   def send(mobile, text) do
-    config = Application.get_env :xin, :sms
-    api_key = config[:api_key]
-    api_url  = config[:api_url]
-    data = [apikey: api_key, mobile: mobile, text: text]
-    HTTPoison.start
-    HTTPoison.post(api_url, {:form,  data}, %{"Content-type" => "application/x-www-form-urlencoded"})
+    {result, error} = is_phone?(mobile)
+    if result do
+      config = Application.get_env :xin, :sms
+      api_key = config[:api_key]
+      api_url  = config[:api_url]
+      data = [apikey: api_key, mobile: mobile, text: text]
+      HTTPoison.post(api_url, {:form,  data}, %{"Content-type" => "application/x-www-form-urlencoded"})
+    end
+    {result, error}
   end
 
 end
