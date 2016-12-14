@@ -27,6 +27,16 @@ defmodule Xin.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+     {:phoenix, "~> 1.2.1"},
+     {:phoenix_pubsub, "~> 1.0"},
+     {:phoenix_ecto, "~> 3.0"},
+     {:httpoison, "~> 0.8.3"},
+     {:qiniu, github: "tony612/qiniu"},
+     {:joken, "~> 1.2"},
+     {:xlsxir, "~> 1.3.1"},
+     {:elixlsx, "~> 0.0.6"},
+     {:ecto_timestamps, "~> 1.0.0"},     
+    ]
   end
 end
