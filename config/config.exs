@@ -28,3 +28,9 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
+
+config :xin, Wechat,
+  appid: "wechat app id",
+  secret: "wechat app secret",
+  token: "wechat token",
+  encoding_aes_key: "32bits key" # 只有"兼容模式"和"安全模式"才需要配置这个值

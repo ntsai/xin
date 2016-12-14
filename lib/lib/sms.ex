@@ -20,7 +20,9 @@ defmodule Xin.Sms do
   @doc """
   发送短信,dev: 是否测试环境，默认 8888
   """
-  def get_code(dev), do: if dev, do: "8888", else: code
+  def get_code(), do: if Mix.env == :dev, do: "8888", else: code
+  def get_code(str) when is_binary(str), do: str
+  def get_code(env) when is_atom(env), do: if env == :dev, do: "8888", else: code
 
   #检查手机号码 renturn {result, error}
   def is_phone?(mobile) do
