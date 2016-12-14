@@ -40,13 +40,13 @@ defmodule Xin.Mixfile do
      {:phoenix, "~> 1.2.1"},
      {:phoenix_pubsub, "~> 1.0"},
      {:phoenix_ecto, "~> 3.0"},
-     {:httpoison, "~> 0.8.3"},
-     {:qiniu, github: "tony612/qiniu"},
-     {:joken, "~> 1.2"},
-     {:xlsxir, "~> 1.3.1"},
-     {:elixlsx, "~> 0.0.6"},
+     {:joken, "~> 1.3.2"},
+     {:xlsxir, "~> 1.4.0"},
+     {:elixlsx, "~> 0.1.0"},
      {:ecto_timestamps, "~> 1.0.0"},
      {:ex_doc, "~> 0.14", only: :dev},
+     {:wechat, gihub: "ntsai/wechat-elixir"},
+     {:qiniu, github: "ntsai/qiniu"},
     ]
   end
 

@@ -6,7 +6,7 @@ defmodule Xin.QiNiu do
   {:qiniu, github: "tony612/qiniu"},
 
   添加启动
-  applications: [:qiniu]
+  applications: [:qiniu, :httpoison]
 
   参数例子：
   data = %Plug.Upload{content_type: "image/png", filename: "hikaru.png", path: "/var/folders/ns/lcjcq8nx213625_5yb8fylh80000gn/T//plug-1472/multipart-636914-225015-3"}
