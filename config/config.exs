@@ -1,39 +1,30 @@
 # This file is responsible for configuring your application
 # and its dependencies with the aid of the Mix.Config module.
-#
-# This configuration file is loaded before any dependency and
-# is restricted to this project.
 use Mix.Config
 
-# General application configuration
-config :xin,
-  ecto_repos: [Xin.Repo]
+# This configuration is loaded before any dependency and is restricted
+# to this project. If another project depends on this project, this
+# file won't be loaded nor affect the parent project. For this reason,
+# if you want to provide default values for your application for
+# 3rd-party users, it should be done in your "mix.exs" file.
 
-# Configures the endpoint
-config :xin, Xin.Endpoint,
-  url: [host: "localhost"],
-  secret_key_base: "NnjT5yHdVDAAPVa45o+aTAKysScYlcnVLz2h0Qo+Bv1o61Ptc/1z3nEuHOXFj5cF",
-  render_errors: [view: Xin.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Xin.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+# You can configure for your application as:
+#
+#     config :xin, key: :value
+#
+# And access this configuration in your application as:
+#
+#     Application.get_env(:xin, :key)
+#
+# Or configure a 3rd-party app:
+#
+#     config :logger, level: :info
+#
 
-# Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
-
-config :xin, :sms,
-  api_key: "973ff3b797b1cadc7ca2xxxxxxxd8",
-  api_url: "https://sms.yunpian.com/v2/sms/single_send.json"
-
-
-config :xin, :qiniu,
-  access_key: "access_key",
-  secret_key: "secret_key",
-  scope_name: "空间名",
-  scope_url:  "空间url地址"
-
-
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+# It is also possible to import configuration files, relative to this
+# directory. For example, you can emulate configuration per environment
+# by uncommenting the line below and defining dev.exs, test.exs and such.
+# Configuration from the imported file will override the ones defined
+# here (which is why it is important to import them last).
+#
+#     import_config "#{Mix.env}.exs"
