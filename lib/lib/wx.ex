@@ -10,7 +10,7 @@ defmodule Xin.Wx do
       appid: "wechat app id",
       secret: "wechat app secret",
       token: "wechat token",
-      encoding_aes_key: "32bits key" # 只有"兼容模式"和"安全模式"才需要配置这个值
+      encoding_aes_key: "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG" # 只有"兼容模式"和"安全模式"才需要配置这个值
 
     #wechat_controller.ex
     defmodule Proj.WechatController do
@@ -35,16 +35,21 @@ defmodule Xin.Wx do
 
         def create(conn, _params) do
           msg = conn.assigns[:msg]
-          reply = build_text_reply(msg, msg.content)
-          xml = "
-            <xml>
-              <MsgType><![CDATA[text]]></MsgType>
-              <Content><![CDATA[%{reply.content}]]></Content>
-              <ToUserName><![CDATA[%{ @reply.to}]]></ToUserName>
-              <FromUserName><![CDATA[%{ @reply.from}]]></FromUserName>
-              <CreateTime>%{ DateTime.to_unix(DateTime.utc_now)}</CreateTime>
-            </xml>
-          "
+          msgtype = msg[:msgtype]
+          xml = if msgtype == "text" do
+            reply = build_text_reply(msg, msg.content)
+            "
+              <xml>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA[#{reply.content}]]></Content>
+                <ToUserName><![CDATA[#{reply.to}]]></ToUserName>
+                <FromUserName><![CDATA[#{reply.from}]]></FromUserName>
+                <CreateTime>%{ DateTime.to_unix(DateTime.utc_now)}</CreateTime>
+              </xml>
+            "
+          else
+            ""
+          end
           text conn, xml
         end
 
