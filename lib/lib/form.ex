@@ -111,7 +111,7 @@ defmodule Xin.Form do
           end
     errors = unless req, do: "必须是#{@errors_type_msg[type]}", else: ""
     {req, errors} = if type == :mobile do
-                      Xin.Help.is_mobile(value)
+                      Xin.Help.is_phone?(value)
                     else
                       {req, errors}
                     end

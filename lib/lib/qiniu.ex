@@ -12,7 +12,7 @@ defmodule Xin.QiNiu do
   data = %Plug.Upload{content_type: "image/png", filename: "hikaru.png", path: "/var/folders/ns/lcjcq8nx213625_5yb8fylh80000gn/T//plug-1472/multipart-636914-225015-3"}
 
   配置 config.exs
-  config :xin, :qiniu,
+  config :xin, Qiniu,
     access_key: "access_key",
     secret_key: "secret_key",
     scope_name: "空间名",

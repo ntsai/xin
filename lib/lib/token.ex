@@ -10,7 +10,7 @@ defmodule Xin.Token do
   @secret Application.get_env(:xin, :token)[:secret] || "secret_key"
 
   # 创建一个token
-  def new(conn, data) do
+  def new(_conn, data) do
     data
     |> token
     |> with_signer(hs256(@secret))
@@ -40,13 +40,13 @@ defmodule Xin.Token.Auth do
     default
   end
 
-  def call(conn, default) do
+  def call(conn, _default) do
     authorization = Xin.Http.authorization(conn)
     if authorization do
       Map.put conn, :user, Xin.Token.get(authorization)
     else
       data = conn |> fetch_session |> get_session(:user)
-      if data, do: Map.put conn, :user, data, else: conn
+      if data, do: Map.put(conn, :user, data), else: conn
     end
   end
 

@@ -1,10 +1,5 @@
 defmodule Xin.Wx do
   @moduledoc """
-    #Add config in `config.exs`
-    def deps do
-      [{:wechat, gihub: "ntsai/wechat-elixir"},]
-    end
-
     #config mix add 
     def application do
       [applications: [:wechat]]
@@ -18,22 +13,21 @@ defmodule Xin.Wx do
       encoding_aes_key: "32bits key" # 只有"兼容模式"和"安全模式"才需要配置这个值
 
     #wechat_controller.ex
-    defmodule MyApp.WechatController do
-      use MyApp.Web, :controller
-      import Xin.Wx
-      wechat_controller(MyApp)
+    defmodule Proj.WechatController do
+      use Xin.Wx, Proj.Web
+      plug Wechat.Plugs.CheckMsgSignature when action in [:create]
     end
 
     #router.ex
       import Xin.Wx
-      wechat_route(MyApp, WechatController)
+      wechat_route(Proj, WechatController)
     """
-    defmacro wechat_controller(app) do
+    defmacro __using__(mod) do
       quote do
-        use unquote(app), :controller
+        use unquote(mod), :controller
 
         plug Wechat.Plugs.CheckUrlSignature
-        plug Wechat.Plugs.CheckMsgSignature when action in [:create]
+        #plug Wechat.Plugs.CheckMsgSignature when action in [:create]
 
         def index(conn, %{"echostr" => echostr}) do
           text conn, echostr
@@ -58,7 +52,7 @@ defmodule Xin.Wx do
           %{from: to, to: from, content: content}
         end
 
-        defoverridable [index: 2, create: 2] 
+        defoverridable [index: 2, create: 2, build_text_reply: 2] 
       end
     end
 
