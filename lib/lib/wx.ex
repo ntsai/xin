@@ -1,3 +1,4 @@
+
 defmodule Xin.Wx do
   @moduledoc """
     #config mix add 
@@ -22,6 +23,10 @@ defmodule Xin.Wx do
       import Xin.Wx
       wechat_route(Proj, WechatController)
     """
+    def config() do
+      Wechat.config
+    end
+
     defmacro __using__(mod) do
       quote do
         use unquote(mod), :controller
@@ -70,4 +75,23 @@ defmodule Xin.Wx do
         end
       end
     end
+
+    @doc """
+    获取微信用户信息，网页授权 type: 默认snsapi_base, url: 获取信息后跳转的连接, state: 额外参数,默认STATE
+    """
+    def snsapi_url(url), do: snsapi_url(url, "snsapi_base", "STATE")
+    def snsapi_url(url, type, state) do
+      "https://open.weixin.qq.com/connect/oauth2/authorize?appid=#{config[:appid]}&redirect_uri=#{URI.encode_www_form(url)}&response_type=code&scope=#{type}&state=#{state}#wechat_redirect"
+    end
+
+    @doc """
+    获取用户 access_token (openid)
+    """
+    def access_token(code) do
+      url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=#{config[:appid]}&secret=#{config[:secret]}&code=#{code}&grant_type=authorization_code"
+      data = HTTPoison.get!(url)
+      Poison.decode!(data.body, keys: :atoms)
+    end
+
+    
 end
