@@ -93,5 +93,47 @@ defmodule Xin.Wx do
       Poison.decode!(data.body, keys: :atoms)
     end
 
-    
+end
+
+
+defmodule Xin.Wx.Plug.CheckOpenid do
+  @moduledoc """
+  Plug to check opneid. Openid 检查插件
+  """  
+  import Plug.Conn
+  use Phoenix.Controller
+  use Phoenix.Router
+
+  def init(opts) do
+    opts
+  end
+
+  def call(conn, opts) do
+    has_openid?(conn)
+  end
+
+  defp has_openid?(conn) do
+      openid = get_session(conn, :openid)
+      if openid do
+        conn
+      else
+        get_openid(conn)
+      end
+  end
+
+  defp get_openid(conn) do
+    if conn.params["code"] do
+      token = Xin.Wx.access_token(conn.params["code"])
+      conn |> put_session(:openid, token[:openid]) 
+    else
+      redirect halt(conn), external: Xin.Wx.snsapi_url(get_url_path(conn))
+    end
+  end
+
+  defp get_url_path(conn) do
+    host = Xin.Http.headers(conn)[:host]
+    path = conn.request_path
+    params_url = URI.encode_query(conn.params)
+    "http://#{host}#{path}?#{params_url}"
+  end
 end
