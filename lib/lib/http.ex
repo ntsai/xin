@@ -27,5 +27,17 @@ defmodule Xin.Http do
     a || nil
   end
 
+  def full_path(conn) do
+    headers_data = headers(conn)
+    http = headers_data[:"x-scheme"]
+    host = headers_data[:host]
+    path = conn.request_path
+    query_path = if conn.query_string != "" do
+      "?" <> conn.query_string
+    else
+      ""
+    end    
+    "#{http}://#{host}#{path}#{query_path}"
+  end
 end
 
