@@ -205,3 +205,18 @@ defmodule Xin.Wx.Plug.CheckOpenid do
   end
 
 end
+
+defmodule Xin.Wx.Plug.JsSdk do
+  @moduledoc """
+  Plug to get jssdk, 公共模板变量 wx, 写入微信SDK信息
+  """
+  import Plug.Conn
+  use Phoenix.Controller
+  use Phoenix.Router
+
+  def init(opts), do: opts
+
+  def call(conn, _opts) do
+    conn |> assign(:wx, Xin.Wx.js_sdk(conn))
+  end
+end
