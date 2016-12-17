@@ -76,10 +76,6 @@ defmodule Xin.Wx do
       end
     end
 
-    defp default_config do
-      [jsapi_ticket_file: "/tmp/jsapi_ticket"]
-    end
-
     @doc """
     获取微信用户信息，网页授权 type: 默认snsapi_base, url: 获取信息后跳转的连接, state: 额外参数,默认STATE
     """
@@ -104,7 +100,6 @@ defmodule Xin.Wx do
 
     def js_sdk(conn) do
       url = conn |> Xin.Http.full_path |> String.split("#") |> List.first
-      IO.puts url
       jt = Xin.Wx.Jsdk.jsapi_ticket[:ticket]
       timestamp = DateTime.to_unix(DateTime.utc_now)
       noncestr = to_string(:rand.uniform(9999999))
@@ -118,7 +113,6 @@ defmodule Xin.Wx do
         signature: signature,# 必填，签名，见附录1
         url: url
       }
-      IO.inspect data
       data
     end
 
