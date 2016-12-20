@@ -23,7 +23,7 @@ defmodule Xin.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison, :ecto_timestamps, :qiniu]]
+    [applications: [:logger, :httpoison, :qiniu, :wechat, :timex, :timex_ecto]]
   end
 
   # Dependencies can be Hex packages:
@@ -43,10 +43,12 @@ defmodule Xin.Mixfile do
      {:joken, "~> 1.3.2"},
      {:xlsxir, "~> 1.4.0"},
      {:elixlsx, "~> 0.1.0"},
-     {:ecto_timestamps, "~> 1.0.0"},
+     # {:ecto_timestamps, "~> 1.0.0"},
      {:ex_doc, "~> 0.14", only: :dev},
-     {:wechat, gihub: "ntsai/wechat-elixir"},
-     {:qiniu, github: "ntsai/qiniu"},
+     {:wechat, github: "ntsai/wechat-elixir"},
+     {:qiniu,  github: "ntsai/qiniu"},
+     {:timex, "~> 3.0"},
+     {:timex_ecto, "~> 3.0"},
     ]
   end
 
