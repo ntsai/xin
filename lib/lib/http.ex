@@ -29,7 +29,7 @@ defmodule Xin.Http do
 
   def full_path(conn) do
     headers_data = headers(conn)
-    http = headers_data[:"x-scheme"]
+    http = if headers_data[:"x-scheme"], do: headers_data[:"x-scheme"], else: "http"
     host = headers_data[:host]
     path = conn.request_path
     query_path = if conn.query_string != "" do
